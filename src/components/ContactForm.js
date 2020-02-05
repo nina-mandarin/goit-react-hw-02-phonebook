@@ -13,16 +13,23 @@ export default class ContactForm extends Component {
 
   handleChange = ({ target }) => {
     const {name, value} = target;
+
     this.setState({
       [name]: value,
     })
+ 
   };
 
   handleSubmit = e => {
     e.preventDefault();
+    const {name, number} = this.state;
+ 
+    if(name && number) {
+      this.props.onCreateContact(this.state.name, this.state.number);
+      return this.setState({ name: '', number: '' });
+    }
 
-    this.props.onCreateContact(this.state.name, this.state.number);
-    this.setState({ name: '', number: '' });
+    return null;
   };
 
 
@@ -33,11 +40,11 @@ export default class ContactForm extends Component {
       <form onSubmit={this.handleSubmit}>
       <Label>
         <LabelText>Name</LabelText>
-        <input type="text" name="name" value={name} onChange={this.handleChange} />
+        <input type="text" name="name" value={name} onChange={this.handleChange} required />
       </Label>
       <Label>
         <LabelText>Number</LabelText>
-        <input type="text" name="number" value={number} onChange={this.handleChange} />
+        <input type="text" name="number" value={number} onChange={this.handleChange} required />
       </Label>
       <SubmitBtn type="submit">Add contact</SubmitBtn>
     </form>
